@@ -8,7 +8,8 @@ const appendAfter = (element, newElement) => {
 
 async function fetchRatings() {
   const currentURL = window.location.href;
-  const ratingsURL = currentURL + 'ratings/';
+  currentURL.search = ''; // Remove query parameters
+  const ratingsURL = currentURL.href + 'ratings/';
 
   const response = await fetch(ratingsURL);
   const text = await response.text();
