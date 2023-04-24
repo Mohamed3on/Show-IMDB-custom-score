@@ -2,25 +2,36 @@ const addCommas = (x) => {
   return x.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
-(Element.prototype.appendAfter = function (element) {
-  element.parentNode.insertBefore(this, element.nextSibling);
-}),
-  false;
+const appendAfter = (element, newElement) => {
+  element.parentNode.insertBefore(newElement, element.nextSibling);
+};
 
-const ratings = Array.from(document.getElementsByClassName('leftAligned'))
-  .slice(1, 11)
-  .map((element) => parseInt(element.textContent.replace(/,/g, '')));
+async function fetchRatings() {
+  const currentURL = window.location.href;
+  const ratingsURL = currentURL + 'ratings/';
 
-const absoluteScore = ratings[0] + ratings[1] - ratings[9] - ratings[8];
+  const response = await fetch(ratingsURL);
+  const text = await response.text();
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(text, 'text/html');
 
-const sum = ratings.reduce((a, b) => a + b, 0);
-const ratio = absoluteScore / sum;
+  const ratings = Array.from(doc.getElementsByClassName('leftAligned'))
+    .slice(1, 11)
+    .map((element) => parseInt(element.textContent.replace(/,/g, '')));
 
-const calculatedScore = Math.round(absoluteScore * ratio);
+  const absoluteScore = ratings[0] + ratings[1] - ratings[9] - ratings[8];
+  const sum = ratings.reduce((a, b) => a + b, 0);
+  const ratio = absoluteScore / sum;
+  const calculatedScore = Math.round(absoluteScore * ratio);
 
-const ScoreElement = document.createElement('div');
-ScoreElement.innerHTML = `${addCommas(String(calculatedScore))} (${Math.round(ratio * 100)}%)`;
-ScoreElement.className = 'sectionHeading';
+  const scoreElement = document.createElement('div');
+  scoreElement.innerHTML = `${addCommas(String(calculatedScore))} (${Math.round(ratio * 100)}%)`;
+  scoreElement.style.fontWeight = 'bold';
+  scoreElement.style.fontSize = '1.2rem';
+  scoreElement.style.color = '#f5c518';
 
-const Headline = document.getElementsByClassName('sectionHeading')[0];
-ScoreElement.appendAfter(Headline);
+  const headline = document.querySelector('h1');
+  appendAfter(headline, scoreElement);
+}
+
+fetchRatings();
