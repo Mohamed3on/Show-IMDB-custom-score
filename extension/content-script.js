@@ -9,13 +9,17 @@ const appendAfter = (element, newElement) => {
 async function fetchRatings() {
   let currentURL = new URL(window.location.href);
   const pathname = currentURL.pathname;
-  if (!pathname.endsWith('/') && !pathname.endsWith('/maindetails')) {
+
+  // Check if the pathname matches the required pattern
+  if (!pathname.match(/\/title\/tt\d+\/(maindetails\/?|ratings\/?)?/)) {
     return;
   }
 
+  // Remove query parameters and any additional path segments
   currentURL.search = ''; // Remove query parameters
-  currentURL = currentURL.href.replace(/\/$/, ''); // Remove trailing slash if present
-  const ratingsURL = currentURL + '/ratings/';
+  currentURL.pathname = currentURL.pathname.split('/').slice(0, 3).join('/'); // Keep only the first 3 path segments
+
+  const ratingsURL = currentURL.href + '/ratings/';
 
   const response = await fetch(ratingsURL);
   const text = await response.text();
