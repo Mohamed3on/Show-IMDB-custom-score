@@ -7,9 +7,15 @@ const appendAfter = (element, newElement) => {
 };
 
 async function fetchRatings() {
-  const currentURL = window.location.href;
+  let currentURL = new URL(window.location.href);
+  const pathname = currentURL.pathname;
+  if (!pathname.endsWith('/') && !pathname.endsWith('/maindetails')) {
+    return;
+  }
+
   currentURL.search = ''; // Remove query parameters
-  const ratingsURL = currentURL.href + 'ratings/';
+  currentURL = currentURL.href.replace(/\/$/, ''); // Remove trailing slash if present
+  const ratingsURL = currentURL + '/ratings/';
 
   const response = await fetch(ratingsURL);
   const text = await response.text();
