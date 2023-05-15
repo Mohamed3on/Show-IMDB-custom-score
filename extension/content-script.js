@@ -1,5 +1,5 @@
 const addCommas = (x) => {
-  return x.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return x.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
 const appendAfter = (element, newElement) => {
@@ -16,23 +16,23 @@ async function fetchRatings() {
   }
 
   // Remove query parameters and any additional path segments
-  currentURL.search = ""; // Remove query parameters
-  currentURL.pathname = currentURL.pathname.split("/").slice(0, 3).join("/"); // Keep only the first 3 path segments
+  currentURL.search = ''; // Remove query parameters
+  currentURL.pathname = currentURL.pathname.split('/').slice(0, 3).join('/'); // Keep only the first 3 path segments
 
-  const ratingsURL = currentURL.href + "/ratings/";
+  const ratingsURL = currentURL.href + '/ratings/';
 
   const response = await fetch(ratingsURL);
   const text = await response.text();
   const parser = new DOMParser();
-  const doc = parser.parseFromString(text, "text/html");
+  const doc = parser.parseFromString(text, 'text/html');
 
-  const nextDataScript = doc.querySelector("script#__NEXT_DATA__");
-  const nextDataJson = nextDataScript?.textContent || "{}";
+  const nextDataScript = doc.querySelector('script#__NEXT_DATA__');
+  const nextDataJson = nextDataScript?.textContent || '{}';
   const nextData = JSON.parse(nextDataJson);
   const histogramData = nextData?.props?.pageProps?.contentData?.histogramData;
 
   const ratingArr = histogramData?.histogramValues;
-  const sortedArr = ratingArr.sort((a, b) => a.rating - b.rating);
+  const sortedArr = ratingArr.sort((a, b) => b.rating - a.rating);
 
   const ratings = sortedArr?.map((rating) => rating?.voteCount || 0);
 
@@ -42,13 +42,13 @@ async function fetchRatings() {
   const ratio = absoluteScore / totalRatings;
   const calculatedScore = Math.round(absoluteScore * ratio);
 
-  const scoreElement = document.createElement("div");
+  const scoreElement = document.createElement('div');
   scoreElement.innerHTML = `${addCommas(String(calculatedScore))} (${Math.round(ratio * 100)}%)`;
-  scoreElement.style.fontWeight = "bold";
-  scoreElement.style.fontSize = "1.2rem";
-  scoreElement.style.color = "#f5c518";
+  scoreElement.style.fontWeight = 'bold';
+  scoreElement.style.fontSize = '1.2rem';
+  scoreElement.style.color = '#f5c518';
 
-  const headline = document.querySelector("h1");
+  const headline = document.querySelector('h1');
   appendAfter(headline, scoreElement);
 }
 
