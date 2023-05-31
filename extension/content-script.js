@@ -38,7 +38,7 @@ async function fetchRatings() {
 
   const totalRatings = histogramData?.totalVoteCount || 0;
 
-  const absoluteScore = ratings[0] + ratings[1] - ratings[9] - ratings[8];
+  const absoluteScore = ratings[9] + ratings[8] - ratings[0] - ratings[1];
   const ratio = absoluteScore / totalRatings;
   const calculatedScore = Math.round(absoluteScore * ratio);
 
