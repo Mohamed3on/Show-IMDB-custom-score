@@ -7,7 +7,7 @@
   "content_scripts": [
     {
       "matches": ["*://*.imdb.com/title/*/*"],
-      "js": ["content-script.js"],
+      "js": ["imdb-score.js"],
       "run_at": "document_end"
     }
   ]

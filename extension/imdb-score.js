@@ -32,7 +32,7 @@ async function fetchRatings() {
   const histogramData = nextData?.props?.pageProps?.contentData?.histogramData;
 
   const ratingArr = histogramData?.histogramValues;
-  const sortedArr = ratingArr.sort((a, b) => b.rating - a.rating);
+  const sortedArr = ratingArr.sort((a, b) => a.rating - b.rating);
 
   const ratings = sortedArr?.map((rating) => rating?.voteCount || 0);
 
