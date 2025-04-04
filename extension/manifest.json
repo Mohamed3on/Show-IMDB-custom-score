@@ -1,9 +1,8 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Show IMDb Movie score",
   "version": "0.13",
   "description": "Shows custom score for IMDb movies",
-  "author": "Mohamed Oun",
   "content_scripts": [
     {
       "matches": ["*://*.imdb.com/title/*/*"],
